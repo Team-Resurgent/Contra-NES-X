@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{AD785BBD-7603-5151-9901-8A788DF4400D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\xbox">
+      <UniqueIdentifier>{96A35001-AD15-5B9B-9F0B-35FB1A956BEA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{EA3F6EAC-AEDC-53DC-A802-6EA8752D81EC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{2D75F3ED-3850-5889-9701-A4EDE8B8CBA2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\xbox">
+      <UniqueIdentifier>{D0DE9A71-0AAB-53BE-84C7-82FF5D97CB96}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\apu.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\cpu6502.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\nes.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\osd.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\ppu.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xbox\xbox_audio.c">
+      <Filter>src\xbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xbox\xbox_input.c">
+      <Filter>src\xbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xbox\xbox_main.c">
+      <Filter>src\xbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xbox\xbox_save.c">
+      <Filter>src\xbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xbox\xbox_video.c">
+      <Filter>src\xbox</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <RxdkResource Include="Platform\xbox\titleimage.rdf">
+      <Filter>Platform\xbox</Filter>
+    </RxdkResource>
+    <RxdkResource Include="Platform\xbox\saveimage.rdf">
+      <Filter>Platform\xbox</Filter>
+    </RxdkResource>
+  </ItemGroup>
+</Project>

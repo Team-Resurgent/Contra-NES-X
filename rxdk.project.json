@@ -1,0 +1,148 @@
+{
+  "name": "Contra-NES-X",
+  "type": "executable",
+  "defaultConfiguration": "Release",
+  "configurations": {
+    "Debug": {
+      "configuration": "debug",
+      "resources": [
+        "Platform/xbox/titleimage.rdf",
+        "Platform/xbox/saveimage.rdf"
+      ],
+      "sources": [
+        "src/core/apu.c",
+        "src/core/cpu6502.c",
+        "src/core/nes.c",
+        "src/core/osd.c",
+        "src/core/ppu.c",
+        "src/xbox/xbox_audio.c",
+        "src/xbox/xbox_input.c",
+        "src/xbox/xbox_main.c",
+        "src/xbox/xbox_save.c",
+        "src/xbox/xbox_video.c"
+      ],
+      "libraries": [
+        "libxbdmd.lib",
+        "libd3d8d.lib",
+        "libd3dx8d.lib",
+        "libxgraphicsd.lib",
+        "libdsoundd.lib",
+        "libxapid.lib",
+        "libcd.lib",
+        "libcppd.lib",
+        "libkerneld.lib"
+      ],
+      "includePaths": [
+        "src"
+      ],
+      "defines": [
+        "TARGET_XBOX=1",
+        "NDEBUG=1"
+      ],
+      "compileFlags": [
+        "-std=gnu17",
+        "-fno-strict-aliasing",
+        "-fwrapv",
+        "-Wall",
+        "-Wno-unknown-pragmas",
+        "-Wno-unused-function",
+        "-Wno-pragma-pack",
+        "-Wno-microsoft-anon-tag",
+        "-Wno-unknown-warning-option",
+        "-Wno-missing-prototype-for-cc",
+        "-U_WIN32",
+        "-U_WIN64",
+        "-U__MINGW32__"
+      ],
+      "cppStandard": "c++20",
+      "exceptions": false,
+      "deployPaths": [
+        "data"
+      ],
+      "forceCopy": true,
+      "createIso": true,
+      "outputDir": "out/Debug",
+      "imageBuild": {
+        "stackSize": 65536,
+        "debug": true,
+        "noLogo": true,
+        "noLibWarn": true,
+        "testId": "0x54520016",
+        "testName": "Contra NES X",
+        "testVersion": "1",
+        "titleImage": "Platform/xbox/gen/titleimage.xbx",
+        "defaultSaveImage": "Platform/xbox/gen/saveimage.xbx"
+      }
+    },
+    "Release": {
+      "configuration": "release",
+      "resources": [
+        "Platform/xbox/titleimage.rdf",
+        "Platform/xbox/saveimage.rdf"
+      ],
+      "sources": [
+        "src/core/apu.c",
+        "src/core/cpu6502.c",
+        "src/core/nes.c",
+        "src/core/osd.c",
+        "src/core/ppu.c",
+        "src/xbox/xbox_audio.c",
+        "src/xbox/xbox_input.c",
+        "src/xbox/xbox_main.c",
+        "src/xbox/xbox_save.c",
+        "src/xbox/xbox_video.c"
+      ],
+      "libraries": [
+        "libd3d8.lib",
+        "libd3dx8.lib",
+        "libxgraphics.lib",
+        "libdsound.lib",
+        "libxapi.lib",
+        "libc.lib",
+        "libcpp.lib",
+        "libkernel.lib"
+      ],
+      "includePaths": [
+        "src"
+      ],
+      "defines": [
+        "TARGET_XBOX=1",
+        "NDEBUG=1"
+      ],
+      "compileFlags": [
+        "-std=gnu17",
+        "-fno-strict-aliasing",
+        "-fwrapv",
+        "-Wall",
+        "-Wno-unknown-pragmas",
+        "-Wno-unused-function",
+        "-Wno-pragma-pack",
+        "-Wno-microsoft-anon-tag",
+        "-Wno-unknown-warning-option",
+        "-Wno-missing-prototype-for-cc",
+        "-U_WIN32",
+        "-U_WIN64",
+        "-U__MINGW32__"
+      ],
+      "cppStandard": "c++20",
+      "exceptions": false,
+      "deployPaths": [
+        "data"
+      ],
+      "forceCopy": true,
+      "createIso": true,
+      "outputDir": "out/Release",
+      "imageBuild": {
+        "stackSize": 65536,
+        "debug": false,
+        "noLogo": true,
+        "noLibWarn": true,
+        "testId": "0x54520016",
+        "testName": "Contra NES X",
+        "testVersion": "1",
+        "titleImage": "Platform/xbox/gen/titleimage.xbx",
+        "defaultSaveImage": "Platform/xbox/gen/saveimage.xbx"
+      }
+    }
+  }
+}

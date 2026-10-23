@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Write rxdk.project.json: what Rxdk.Cli builds Contra-NES-X from.
+
+The sources are the NES core (src/core/*.c) and the Xbox side
+(src/xbox/*.c); tools/hosttest is the PC's and is not in it. The disc's
+data/ folder (the cartridge setup.py assembles) is deployed beside the XBE.
+Compile settings come from tools/xbox/xbconfig.py.
+
+    python tools/xbox/gen_manifest.py
+"""
+import glob
+import json
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import xbconfig  # noqa: E402
+
+ROOT = xbconfig.ROOT
+PROJECT_NAME = "Contra-NES-X"           # the ISO is out/<Config>/XISO/Contra-NES-X.iso
+# Team Resurgent TitleID-DB: the next after Contra-X (54520015)
+TITLE_ID = "0x54520016"
+TITLE_NAME = "Contra NES X"
+
+LIBS_RELEASE = ["libd3d8.lib", "libd3dx8.lib", "libxgraphics.lib", "libdsound.lib",
+                "libxapi.lib", "libc.lib", "libcpp.lib", "libkernel.lib"]
+LIBS_DEBUG = ["libxbdmd.lib", "libd3d8d.lib", "libd3dx8d.lib", "libxgraphicsd.lib",
+              "libdsoundd.lib", "libxapid.lib", "libcd.lib", "libcppd.lib", "libkerneld.lib"]
+
+
+def sources():
+    out = []
+    for sub in ("core", "xbox"):
+        out += sorted(os.path.relpath(p, ROOT).replace("\\", "/")
+                      for p in glob.glob(os.path.join(ROOT, "src", sub, "*.c")))
+    if not out:
+        raise SystemExit("gen_manifest: no src/core/*.c or src/xbox/*.c")
+    return out
+
+
+def main():
+    srcs = sources()
+
+    # RXDK's Visual Studio build names each object after its file alone
+    seen = {}
+    for s in srcs:
+        b = os.path.basename(s).lower()
+        if b in seen:
+            raise SystemExit("gen_manifest: %s and %s share a file name; RXDK's Visual Studio "
+                             "build would overwrite one object with the other" % (seen[b], s))
+        seen[b] = s
+
+    def cfg(debug):
+        return {
+            "configuration": "debug" if debug else "release",
+            # the dashboard icons: BMPs (tools/xbox/make_icons.py) bundled
+            # to DXT1 .xbx before the link
+            "resources": ["Platform/xbox/titleimage.rdf", "Platform/xbox/saveimage.rdf"],
+            "sources": srcs,
+            "libraries": LIBS_DEBUG if debug else LIBS_RELEASE,
+            "includePaths": xbconfig.INCLUDE_PATHS,
+            "defines": xbconfig.DEFINES,
+            "compileFlags": xbconfig.COMPILE_FLAGS,
+            "cppStandard": "c++20",
+            "exceptions": False,
+            "deployPaths": ["data"],
+            "forceCopy": True,
+            "createIso": True,
+            "outputDir": "out/Debug" if debug else "out/Release",
+            "imageBuild": {
+                "stackSize": 65536,
+                "debug": debug,
+                "noLogo": True,
+                "noLibWarn": True,
+                "testId": TITLE_ID,
+                "testName": TITLE_NAME,
+                "testVersion": "1",
+                "titleImage": "Platform/xbox/gen/titleimage.xbx",
+                "defaultSaveImage": "Platform/xbox/gen/saveimage.xbx",
+            },
+        }
+
+    manifest = {
+        "name": PROJECT_NAME,
+        "type": "executable",
+        "defaultConfiguration": "Release",
+        "configurations": {"Debug": cfg(True), "Release": cfg(False)},
+    }
+    out = os.path.join(ROOT, "rxdk.project.json")
+    text = json.dumps(manifest, indent=2) + "\n"
+    old = open(out, encoding="utf-8").read() if os.path.isfile(out) else None
+    if old != text:            # unchanged, it keeps its time (the RXDK extension watches it)
+        with open(out, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+    print("gen_manifest: %d sources" % len(srcs))
+
+
+if __name__ == "__main__":
+    main()
